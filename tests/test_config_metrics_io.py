@@ -11,11 +11,10 @@ from dg_rtdiff.utils import save_signed16
 PROJECT = Path(__file__).resolve().parents[1]
 
 
-def test_ablation_config_inheritance() -> None:
-    config = load_config(PROJECT / "configs" / "ablations" / "a2_direction_only.yaml")
+def test_main_config_loads() -> None:
+    config = load_config(PROJECT / "configs" / "dg_rtdiff_stage_a.yaml")
+    assert config["model"]["method"] == "dg_rtdiff"
     assert config["model"]["channels"] == [32, 64, 128, 256]
-    assert config["model"]["use_prior_gate"] is False
-    assert config["loss"]["lambda_prior"] == 0.0
 
 
 def test_aggregate_ignores_string_metadata() -> None:

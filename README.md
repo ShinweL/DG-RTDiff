@@ -15,7 +15,7 @@ Direction-Guided Residual-Target Diffusion for image-domain GPR clutter suppress
 
 ```text
 DG_RTDiff/
-├─ configs/                    # 正式配置与 CPU 冒烟配置
+├─ configs/                    # 主模型正式配置
 ├─ dg_rtdiff/
 │  ├─ data/                    # 固定组合、M 弱标注、R2/R1 数据集
 │  ├─ diffusion/               # 余弦调度和 DDIM
@@ -69,24 +69,20 @@ Clutter/
 
 ```powershell
 python -m pytest -q
-python smoke_test.py --config configs/smoke.yaml
-python train.py --config configs/smoke.yaml --dry-run
+python train.py --config configs/dg_rtdiff_stage_a.yaml --dry-run
 ```
 
-这些命令不会执行正式 epoch。
+`--dry-run` 只执行少量前向/反向，不执行正式 epoch。
 
-## 正式训练顺序
+## 正式训练
 
 数据质检通过并确认 GPU 环境后：
 
 ```powershell
-python train.py --config configs/unet_baseline.yaml --seed 20260716
-python train.py --config configs/vanilla_ddpm.yaml --seed 20260716
 python train.py --config configs/dg_rtdiff_stage_a.yaml --seed 20260716
-python train.py --config configs/dg_rtdiff_stage_b.yaml --resume runs/dg_rtdiff_stage_a_s20260716/checkpoints/best_ema.pt --seed 20260716
 ```
 
-建议先只运行一个种子。确认 DG-RTDiff 相比 Vanilla DDPM 有收益后，再补三个种子和消融。
+建议先只运行一个种子，确认收敛后再补多个种子。
 
 正式配置含 `max_hours` 硬超时。训练过程每个 epoch 更新 `runs/<实验>/heartbeat.json`，并写入 `logs/train.csv` 与 `checkpoints/latest.pt`，便于工作站监控和中断恢复。
 
