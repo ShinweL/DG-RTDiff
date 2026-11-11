@@ -2,7 +2,13 @@
 
 Direction-Guided Residual-Target Diffusion for image-domain GPR clutter suppression.
 
-本工程对应 `D:\Clutter\DG-RTDiff_实验方案.md`。模型输入单通道 GPR PNG，直接预测稀疏目标响应图；它不处理原始雷达矩阵，也不进行介电常数或物理深度反演。
+本工程实现图像域的 GPR 杂波抑制。模型输入单通道 GPR PNG，直接预测稀疏目标响应图；它不处理原始雷达矩阵，也不进行介电常数或物理深度反演。
+
+## 声明 / Disclaimer
+
+本仓库中的代码及相关内容由 AI 辅助生成与整理，可能存在错误、遗漏或不完善之处，请在使用前自行审阅与验证。如在使用过程中发现任何问题，欢迎通过本仓库的 GitHub Issues 或仓库主页联系作者。
+
+The code and related content in this repository were produced with AI assistance and may contain errors or omissions. Please review and verify before use. If you encounter any problems, please contact the author via GitHub Issues or the repository homepage.
 
 ## 当前状态
 
