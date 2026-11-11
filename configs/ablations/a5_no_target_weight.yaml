@@ -1,0 +1,5 @@
+_base_: ../dg_rtdiff_stage_a.yaml
+experiment: ablation_a5_no_target_weight
+
+loss:
+  target_weight_kappa: 0.0

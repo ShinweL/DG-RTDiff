@@ -1,0 +1,12 @@
+_base_: ../dg_rtdiff_stage_a.yaml
+experiment: ablation_a3_direction_prior
+
+model:
+  use_prior_gate: true
+
+loss:
+  target_weight_kappa: 0.0
+  lambda_rec: 1.0
+  lambda_dir: 0.0
+  lambda_prior: 0.1
+  lambda_empty: 0.0

@@ -1,0 +1,79 @@
+experiment: dg_rtdiff_stage_b
+mode: stage_b
+seed: 20260716
+device: auto
+require_cuda: true
+output_root: runs
+
+data:
+  fixed_root: ../data/fixed_composite_dataset_v2_gain18_lower
+  m_root: ../data/M
+  r2_root: ../data/R2
+  r1_root: ../data/R1
+  source_splits: ../data/fixed_composite_dataset_v2_gain18_lower/source_splits.json
+  r1_window_manifest: null
+  debug_crop_size: null
+
+loader:
+  batch_size: 4
+  num_workers: 8
+  pin_memory: true
+  persistent_workers: true
+  horizontal_flip: true
+
+model:
+  method: dg_rtdiff
+  in_channels: 1
+  channels: [32, 64, 128, 256]
+  blocks_per_level: 2
+  dropout: 0.0
+  time_dim: 128
+  group_norm_groups: 8
+  use_checkpoint: true
+  bottleneck_attention: false
+  horizontal_kernel: 31
+
+diffusion:
+  timesteps: 1000
+  schedule: cosine
+  sampling_steps: 20
+  eta: 0.0
+  clip_x0: 2.0
+
+loss:
+  target_weight_kappa: 4.0
+  lambda_rec: 1.0
+  lambda_dir: 0.2
+  lambda_prior: 0.1
+  lambda_empty: 0.2
+  mil_top_fraction: 0.1
+
+optimizer:
+  name: adamw
+  lr: 0.00002
+  weight_decay: 0.0001
+  betas: [0.9, 0.999]
+
+training:
+  epochs: 20
+  max_hours: 24
+  steps_per_epoch: 2000
+  stage_b_pattern: [composite, composite, m, r2]
+  grad_accum_steps: 2
+  grad_clip_norm: 1.0
+  amp: true
+  amp_dtype: float16
+  ema_decay: 0.9999
+  val_every: 2
+  save_every: 2
+  patience_evaluations: 4
+  freeze_denoiser_epochs: 3
+
+evaluation:
+  batch_size: 1
+  max_composite_samples: null
+  max_empty_samples: null
+  pfr_threshold: 0.1
+  baseline_metrics_json: runs/vanilla_ddpm_s20260716/metrics/val.json
+  empty_tolerance: 1.05
+  save_predictions: true
