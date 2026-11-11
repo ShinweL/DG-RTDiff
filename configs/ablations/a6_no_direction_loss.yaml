@@ -1,5 +1,0 @@
-_base_: ../dg_rtdiff_stage_a.yaml
-experiment: ablation_a6_no_direction_loss
-
-loss:
-  lambda_dir: 0.0
